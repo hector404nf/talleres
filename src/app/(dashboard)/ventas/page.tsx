@@ -327,9 +327,9 @@ export default function VentasPage() {
         size="full"
         noPadding
       >
-        <div className="h-full flex flex-col lg:flex-row">
+        <div className="h-full flex flex-col lg:flex-row overflow-hidden">
           {/* Catálogo */}
-          <div className="flex-1 flex flex-col min-h-0 lg:border-r border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950">
+          <div className="flex-1 flex flex-col min-h-0 min-w-0 lg:border-r border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950">
             {/* Buscador */}
             <div className="p-4 lg:p-5 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
               <div className="relative max-w-xl">
@@ -339,7 +339,7 @@ export default function VentasPage() {
                   placeholder="Buscar producto por nombre, código o código de barras..."
                   value={searchProduct}
                   onChange={e => setSearchProduct(e.target.value)}
-                  className="w-full bg-gray-100 dark:bg-gray-800 border-0 rounded-2xl pl-12 pr-4 py-4 text-base text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-brand-primary/30 outline-none transition-all"
+                  className="w-full bg-gray-100 dark:bg-gray-800 border-0 rounded-2xl pl-12 pr-4 py-3.5 lg:py-4 text-base text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-brand-primary/30 outline-none transition-all"
                   autoFocus
                 />
               </div>
@@ -353,7 +353,7 @@ export default function VentasPage() {
                   <p className="text-sm font-medium">No hay productos disponibles</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(170px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3 lg:gap-4">
                   {filteredProducts.map((p: any) => {
                     const bajoStock = (p.stock_actual || 0) <= (p.stock_minimo || 0);
                     const inCart = cart.find(item => item.id === p.id);
@@ -414,7 +414,7 @@ export default function VentasPage() {
           </div>
 
           {/* Ticket / Carrito */}
-          <div className="w-full lg:w-[460px] xl:w-[520px] flex flex-col min-h-0 bg-white dark:bg-gray-900">
+          <div className="w-full lg:w-[360px] xl:w-[420px] 2xl:w-[480px] flex flex-col min-h-0 min-w-0 bg-white dark:bg-gray-900 lg:border-l border-gray-100 dark:border-gray-800 max-h-[45%] lg:max-h-none">
             {/* Header del ticket */}
             <div className="p-4 lg:p-5 border-b border-gray-100 dark:border-gray-800">
               <div className="flex items-center justify-between mb-4">
