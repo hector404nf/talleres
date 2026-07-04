@@ -324,18 +324,19 @@ export default function VentasPage() {
         isOpen={showOffcanvas}
         onClose={() => setShowOffcanvas(false)}
         title="Nueva Venta"
-        size="xl"
+        size="full"
+        noPadding
       >
         <div className="h-full flex flex-col lg:flex-row">
           {/* Catálogo */}
-          <div className="flex-1 flex flex-col min-h-0 lg:border-r border-gray-100 dark:border-gray-800">
+          <div className="flex-1 flex flex-col min-h-0 lg:border-r border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950">
             {/* Buscador */}
-            <div className="p-4 lg:p-6 border-b border-gray-100 dark:border-gray-800">
-              <div className="relative">
+            <div className="p-4 lg:p-5 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+              <div className="relative max-w-xl">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Buscar producto..."
+                  placeholder="Buscar producto por nombre, código o código de barras..."
                   value={searchProduct}
                   onChange={e => setSearchProduct(e.target.value)}
                   className="w-full bg-gray-100 dark:bg-gray-800 border-0 rounded-2xl pl-12 pr-4 py-4 text-base text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-brand-primary/30 outline-none transition-all"
@@ -345,14 +346,14 @@ export default function VentasPage() {
             </div>
 
             {/* Grid de productos */}
-            <div className="flex-1 overflow-y-auto p-4 lg:p-6">
+            <div className="flex-1 overflow-y-auto p-4 lg:p-5">
               {filteredProducts.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
                   <Package className="w-16 h-16 mb-4 opacity-40" />
                   <p className="text-sm font-medium">No hay productos disponibles</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
                   {filteredProducts.map((p: any) => {
                     const bajoStock = (p.stock_actual || 0) <= (p.stock_minimo || 0);
                     const inCart = cart.find(item => item.id === p.id);
@@ -361,37 +362,49 @@ export default function VentasPage() {
                         key={p.id}
                         onClick={() => !bajoStock && addToCart(p)}
                         disabled={bajoStock}
-                        className={`text-left group relative flex flex-col bg-white dark:bg-gray-900 border rounded-2xl p-4 transition-all ${
+                        className={`text-left group relative flex flex-col bg-white dark:bg-gray-900 border rounded-2xl overflow-hidden transition-all ${
                           bajoStock
                             ? 'border-gray-100 dark:border-gray-800 opacity-50 cursor-not-allowed'
                             : 'border-gray-100 dark:border-gray-800 hover:border-brand-primary/40 hover:shadow-lg hover:shadow-brand-primary/5 cursor-pointer'
                         }`}
                       >
-                        <div className="aspect-square rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center mb-3">
-                          <Package className="w-10 h-10 text-gray-300 dark:text-gray-600" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm text-gray-900 dark:text-white line-clamp-2 leading-snug">{p.nombre}</h4>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{p.codigo || 'Sin código'}</p>
-                        </div>
-                        <div className="mt-3 flex items-center justify-between">
-                          <span className="text-lg font-bold text-brand-primary">{formatPriceConfig(p.precio_venta)}</span>
-                          {!bajoStock && (
-                            <span className="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Plus className="w-5 h-5" />
+                        <div className="aspect-[4/3] bg-gray-50 dark:bg-gray-800 flex items-center justify-center relative overflow-hidden">
+                          {p.imagen_url ? (
+                            <img
+                              src={p.imagen_url}
+                              alt={p.nombre}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <Package className="w-12 h-12 text-gray-300 dark:text-gray-600" />
+                          )}
+                          {bajoStock && (
+                            <span className="absolute top-2 right-2 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                              Sin stock
+                            </span>
+                          )}
+                          {inCart && !bajoStock && (
+                            <span className="absolute top-2 right-2 w-7 h-7 rounded-full bg-brand-primary text-white text-sm font-bold flex items-center justify-center shadow-lg">
+                              {inCart.cantidad}
                             </span>
                           )}
                         </div>
-                        {bajoStock && (
-                          <span className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
-                            Sin stock
-                          </span>
-                        )}
-                        {inCart && !bajoStock && (
-                          <span className="absolute top-3 right-3 w-6 h-6 rounded-full bg-brand-primary text-white text-xs font-bold flex items-center justify-center">
-                            {inCart.cantidad}
-                          </span>
-                        )}
+                        <div className="p-3 flex-1 flex flex-col">
+                          <h4 className="font-semibold text-sm text-gray-900 dark:text-white line-clamp-2 leading-snug">{p.nombre}</h4>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{p.codigo || 'Sin código'}</p>
+                          <div className="mt-auto pt-3 flex items-center justify-between">
+                            <span className="text-lg font-bold text-brand-primary">{formatPriceConfig(p.precio_venta)}</span>
+                            {!bajoStock && (
+                              <span className="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Plus className="w-5 h-5" />
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </button>
                     );
                   })}
@@ -401,9 +414,9 @@ export default function VentasPage() {
           </div>
 
           {/* Ticket / Carrito */}
-          <div className="w-full lg:w-[440px] flex flex-col min-h-0 bg-gray-50/70 dark:bg-gray-900/50">
+          <div className="w-full lg:w-[460px] xl:w-[520px] flex flex-col min-h-0 bg-white dark:bg-gray-900">
             {/* Header del ticket */}
-            <div className="p-4 lg:p-6 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+            <div className="p-4 lg:p-5 border-b border-gray-100 dark:border-gray-800">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-brand-primary" />

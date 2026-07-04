@@ -8,10 +8,11 @@ interface OffcanvasProps {
   onClose: () => void;
   title: string;
   children: ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  noPadding?: boolean;
 }
 
-export default function Offcanvas({ isOpen, onClose, title, children, size = 'md' }: OffcanvasProps) {
+export default function Offcanvas({ isOpen, onClose, title, children, size = 'md', noPadding = false }: OffcanvasProps) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -29,7 +30,8 @@ export default function Offcanvas({ isOpen, onClose, title, children, size = 'md
     sm: 'w-96',
     md: 'w-[32rem]',
     lg: 'w-[40rem]',
-    xl: 'w-[48rem]'
+    xl: 'w-[48rem]',
+    full: 'w-full'
   };
 
   if (!isOpen) return null;
@@ -44,10 +46,10 @@ export default function Offcanvas({ isOpen, onClose, title, children, size = 'md
 
       {/* Panel */}
       <div
-        className={`relative bg-white dark:bg-gray-900 shadow-2xl h-full overflow-y-auto transition-transform duration-300 ease-out border-l border-gray-100 dark:border-gray-800 ${sizeClasses[size]} ${show ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`relative bg-white dark:bg-gray-900 shadow-2xl h-full transition-transform duration-300 ease-out border-l border-gray-100 dark:border-gray-800 ${sizeClasses[size]} ${show ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-b border-gray-100 dark:border-gray-800 px-6 py-4 flex items-center justify-between z-10">
+        <div className={`sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-b border-gray-100 dark:border-gray-800 flex items-center justify-between z-10 ${noPadding ? 'px-6 py-4' : 'px-6 py-4'}`}>
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">{title}</h2>
           <button
             onClick={onClose}
@@ -58,7 +60,7 @@ export default function Offcanvas({ isOpen, onClose, title, children, size = 'md
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className={`h-[calc(100vh-65px)] overflow-hidden ${noPadding ? '' : 'p-6 overflow-y-auto'}`}>
           {children}
         </div>
       </div>
