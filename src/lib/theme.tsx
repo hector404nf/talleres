@@ -1,7 +1,75 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
+// ============================================================
+// ADMIN THEME UTILITIES (light/dark/system + brand colors)
+// ============================================================
+export type ThemeMode = 'light' | 'dark' | 'system';
+
+const ADMIN_THEME_KEY = 'talleres-theme';
+
+export function getStoredTheme(): ThemeMode {
+  if (typeof window === 'undefined') return 'system';
+  try {
+    return (localStorage.getItem(ADMIN_THEME_KEY) as ThemeMode) || 'system';
+  } catch {
+    return 'system';
+  }
+}
+
+export function setStoredTheme(theme: ThemeMode) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(ADMIN_THEME_KEY, theme);
+  } catch { /* noop */ }
+}
+
+export function applyTheme(theme: ThemeMode) {
+  if (typeof window === 'undefined') return;
+  const root = document.documentElement;
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = theme === 'dark' || (theme === 'system' && systemDark);
+
+  if (isDark) {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
+}
+
+export function listenSystemTheme(callback: (isDark: boolean) => void) {
+  if (typeof window === 'undefined') return () => {};
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const handler = (e: MediaQueryListEvent) => callback(e.matches);
+  mq.addEventListener('change', handler);
+  return () => mq.removeEventListener('change', handler);
+}
+
+export function hexToRgb(hex: string) {
+  const clean = hex.replace('#', '');
+  const bigint = parseInt(clean, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return { r, g, b };
+}
+
+export function applyBrandColors(primary: string, secondary: string) {
+  if (typeof window === 'undefined') return;
+  const root = document.documentElement;
+  const primaryRgb = hexToRgb(primary || '#4f46e5');
+  const secondaryRgb = hexToRgb(secondary || '#ffffff');
+
+  root.style.setProperty('--brand-primary', primary || '#4f46e5');
+  root.style.setProperty('--brand-secondary', secondary || '#ffffff');
+  root.style.setProperty('--brand-primary-rgb', `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`);
+  root.style.setProperty('--brand-secondary-rgb', `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}`);
+}
+
+// ============================================================
+// STORE THEME PROVIDER (legacy, used by public /[slug] pages)
+// ============================================================
 interface ThemeColors {
   bg: string;
   bgCard: string;

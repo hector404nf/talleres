@@ -201,33 +201,28 @@ export default function ClientesPage() {
     <div>
       {/* Header */}
       <div className="flex justify-end mb-6">
-        <button 
-          onClick={openNew} 
-          className="bg-blue-600 text-white px-4 py-2 rounded-2xl hover:bg-blue-700 transition-colors flex items-center space-x-2"
+        <button
+          onClick={openNew}
+          className="bg-brand-primary text-white px-4 py-2 rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2 text-sm font-medium"
         >
-          <span>➕</span>
+          <span>+</span>
           <span>Nuevo Cliente</span>
         </button>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-3xl p-6 shadow-sm">
-          <p className="text-sm text-gray-500">Total Clientes</p>
-          <p className="text-2xl font-bold">{clientes.length}</p>
-        </div>
-        <div className="bg-white rounded-3xl p-6 shadow-sm">
-          <p className="text-sm text-gray-500">Recurrentes</p>
-          <p className="text-2xl font-bold">{clientes.filter((c: any) => c.es_recurrente).length}</p>
-        </div>
-        <div className="bg-white rounded-3xl p-6 shadow-sm">
-          <p className="text-sm text-gray-500">Personas</p>
-          <p className="text-2xl font-bold">{clientes.filter((c: any) => c.tipo_persona === 'fisica').length}</p>
-        </div>
-        <div className="bg-white rounded-3xl p-6 shadow-sm">
-          <p className="text-sm text-gray-500">Empresas</p>
-          <p className="text-2xl font-bold">{clientes.filter((c: any) => c.tipo_persona === 'juridica').length}</p>
-        </div>
+        {[
+          { label: 'Total Clientes', value: clientes.length },
+          { label: 'Recurrentes', value: clientes.filter((c: any) => c.es_recurrente).length },
+          { label: 'Personas', value: clientes.filter((c: any) => c.tipo_persona === 'fisica').length },
+          { label: 'Empresas', value: clientes.filter((c: any) => c.tipo_persona === 'juridica').length },
+        ].map((s, i) => (
+          <div key={i} className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{s.label}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{s.value}</p>
+          </div>
+        ))}
       </div>
 
       {/* Buscador */}
@@ -238,7 +233,7 @@ export default function ClientesPage() {
             placeholder="Buscar por nombre, CUIT, email, teléfono..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full bg-white border-none rounded-2xl shadow-sm pl-10 pr-4 py-3 placeholder-gray-400 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+            className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
           />
           <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
         </div>
@@ -247,21 +242,21 @@ export default function ClientesPage() {
       {/* Tabla */}
       {isLoading ? (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-500">Cargando clientes...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">Cargando clientes...</p>
         </div>
       ) : (
-        <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50/50">
+              <thead className="bg-gray-50/50 dark:bg-gray-800/50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase">Cliente</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase">Documento</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase">Contacto</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase">Ubicación</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase">Tipo</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-400 uppercase">Acciones</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">Cliente</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">Documento</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">Contacto</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">Ubicación</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">Tipo</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -269,77 +264,77 @@ export default function ClientesPage() {
                   <tr>
                     <td colSpan={6} className="px-6 py-12 text-center">
                       <div className="text-4xl mb-2">👥</div>
-                      <p className="text-gray-500 mb-1">No hay clientes registrados</p>
-                      <p className="text-sm text-gray-400">Hacé clic en "Nuevo Cliente" para agregar uno</p>
+                      <p className="text-gray-500 dark:text-gray-400 mb-1">No hay clientes registrados</p>
+                      <p className="text-sm text-gray-400 dark:text-gray-500">Hacé clic en "Nuevo Cliente" para agregar uno</p>
                     </td>
                   </tr>
                 ) : filtered.map((c: any) => {
                   const hoy = new Date();
                   const esCumple = c.fecha_nacimiento && new Date(c.fecha_nacimiento).getDate() === hoy.getDate() && new Date(c.fecha_nacimiento).getMonth() === hoy.getMonth();
                   return (
-                  <tr key={c.id} className="border-t border-gray-50 hover:bg-gray-50/50 transition-colors">
+                  <tr key={c.id} className="border-t border-gray-50 dark:border-gray-800 hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors">
                     <td className="px-4 py-3">
-                      <div className="font-medium text-gray-900">
-                        {c.tipo_persona === 'fisica' 
-                          ? `${c.apellido}, ${c.nombre}` 
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {c.tipo_persona === 'fisica'
+                          ? `${c.apellido}, ${c.nombre}`
                           : c.razon_social}
                         {c.bloqueado && <span className="ml-2 text-red-500" title="Bloqueado">🚫</span>}
                       </div>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
                         {esCumple && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300">
                             🎂 Cumpleaños hoy
                           </span>
                         )}
                         {c.es_recurrente && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
                             ⭐ Recurrente
                           </span>
                         )}
                         {c.cupo_credito > 0 && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                             💳 Crédito: ${c.cupo_credito}
                           </span>
                         )}
                         {c.en_lista_negra_set && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                             ⬛ SET
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="font-mono text-sm text-gray-600">{c.cuil_cuit || '-'}</span>
+                      <span className="font-mono text-sm text-gray-600 dark:text-gray-300">{c.cuil_cuit || '-'}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="text-sm">{c.telefono || c.celular || '-'}</div>
-                      <div className="text-xs text-gray-500">{c.email || '-'}</div>
+                      <div className="text-sm text-gray-900 dark:text-white">{c.telefono || c.celular || '-'}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{c.email || '-'}</div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="text-sm">{c.localidad || '-'}</div>
-                      <div className="text-xs text-gray-500">{c.provincia || '-'}</div>
+                      <div className="text-sm text-gray-900 dark:text-white">{c.localidad || '-'}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{c.provincia || '-'}</div>
                     </td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        c.tipo_persona === 'fisica' 
-                          ? 'bg-blue-100 text-blue-800' 
-                          : 'bg-green-100 text-green-800'
+                        c.tipo_persona === 'fisica'
+                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                          : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                       }`}>
                         {c.tipo_persona === 'fisica' ? '👤 Persona' : '🏢 Empresa'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center space-x-1">
-                        <button 
-                          onClick={() => openEdit(c)} 
-                          className="p-2 text-blue-600 hover:bg-gray-50 rounded-2xl transition-colors"
+                        <button
+                          onClick={() => openEdit(c)}
+                          className="p-2 text-blue-600 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
                           title="Editar"
                         >
                           ✏️
                         </button>
-                        <button 
-                          onClick={() => handleDelete(c.id)} 
-                          className="p-2 text-red-600 hover:bg-gray-50 rounded-2xl transition-colors"
+                        <button
+                          onClick={() => handleDelete(c.id)}
+                          className="p-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
                           title="Eliminar"
                         >
                           🗑️
@@ -364,17 +359,17 @@ export default function ClientesPage() {
       >
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Tabs */}
-          <div className="border-b border-gray-100">
-            <nav className="flex space-x-8">
+          <div className="border-b border-gray-100 dark:border-gray-800">
+            <nav className="flex space-x-6 overflow-x-auto scrollbar-hide">
               {(['general', 'contacto', 'recurrente', 'alertas', 'avanzado', 'historial'] as const).map((tab) => (
                 <button
                   key={tab}
                   type="button"
                   onClick={() => setActiveTab(tab)}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  className={`py-2.5 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                     activeTab === tab
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-brand-primary text-brand-primary'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   {tab === 'general' && 'General'}
@@ -392,7 +387,7 @@ export default function ClientesPage() {
           {activeTab === 'general' && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Persona</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tipo de Persona</label>
                 <div className="flex space-x-4">
                   <label className="flex items-center space-x-2 cursor-pointer">
                     <input
@@ -422,34 +417,34 @@ export default function ClientesPage() {
               {formData.tipo_persona === 'fisica' ? (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre *</label>
                     <input
                       type="text"
                       value={formData.nombre}
                       onChange={e => setFormData({...formData, nombre: e.target.value})}
-                      className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                      className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Apellido *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Apellido *</label>
                     <input
                       type="text"
                       value={formData.apellido}
                       onChange={e => setFormData({...formData, apellido: e.target.value})}
-                      className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                      className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                       required
                     />
                   </div>
                 </div>
               ) : (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Razón Social *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Razón Social *</label>
                   <input
                     type="text"
                     value={formData.razon_social}
                     onChange={e => setFormData({...formData, razon_social: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                     required
                   />
                 </div>
@@ -457,22 +452,22 @@ export default function ClientesPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">CUIT/CUIL</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">CUIT/CUIL</label>
                   <input
                     type="text"
                     value={formData.cuil_cuit}
                     onChange={e => setFormData({...formData, cuil_cuit: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                     placeholder="20-12345678-9"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Fecha de Nacimiento</label>
                   <input
                     type="date"
                     value={formData.fecha_nacimiento}
                     onChange={e => setFormData({...formData, fecha_nacimiento: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
               </div>
@@ -485,12 +480,12 @@ export default function ClientesPage() {
                   options={GENEROS}
                 />
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Profesión/Actividad</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Profesión/Actividad</label>
                   <input
                     type="text"
                     value={formData.profesion}
                     onChange={e => setFormData({...formData, profesion: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                     placeholder="Ej: Mecánico, Comerciante"
                   />
                 </div>
@@ -498,21 +493,21 @@ export default function ClientesPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Cupo de Crédito</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cupo de Crédito</label>
                   <input
                     type="number"
                     value={formData.cupo_credito}
                     onChange={e => setFormData({...formData, cupo_credito: parseFloat(e.target.value) || 0})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Puntos Disponibles</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Puntos Disponibles</label>
                   <input
                     type="number"
                     value={formData.puntos_disponibles}
                     onChange={e => setFormData({...formData, puntos_disponibles: parseInt(e.target.value) || 0})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
               </div>
@@ -529,53 +524,53 @@ export default function ClientesPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono</label>
                   <input
                     type="text"
                     value={formData.telefono}
                     onChange={e => setFormData({...formData, telefono: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Celular</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Celular</label>
                 <input
                   type="text"
                   value={formData.celular}
                   onChange={e => setFormData({...formData, celular: e.target.value})}
-                  className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                  className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Dirección</label>
                 <input
                   type="text"
                   value={formData.direccion}
                   onChange={e => setFormData({...formData, direccion: e.target.value})}
-                  className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                  className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Localidad</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Localidad</label>
                   <input
                     type="text"
                     value={formData.localidad}
                     onChange={e => setFormData({...formData, localidad: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
                 <SelectSearch
@@ -585,22 +580,22 @@ export default function ClientesPage() {
                   options={provinciaOptions}
                 />
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Código Postal</label>
                   <input
                     type="text"
                     value={formData.codigo_postal}
                     onChange={e => setFormData({...formData, codigo_postal: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Observaciones</label>
                 <textarea
                   value={formData.observaciones}
                   onChange={e => setFormData({...formData, observaciones: e.target.value})}
-                  className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                  className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                   rows={3}
                   placeholder="Notas adicionales sobre el cliente..."
                 />
@@ -635,30 +630,30 @@ export default function ClientesPage() {
 
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Compras mínimas</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Compras mínimas</label>
                       <input
                         type="number"
                         value={formData.frecuencia_compra_compras}
                         onChange={e => setFormData({...formData, frecuencia_compra_compras: parseInt(e.target.value) || 0})}
-                        className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                        className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Monto mínimo acumulado ($)</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Monto mínimo acumulado ($)</label>
                       <input
                         type="number"
                         value={formData.frecuencia_compra_monto}
                         onChange={e => setFormData({...formData, frecuencia_compra_monto: parseFloat(e.target.value) || 0})}
-                        className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                        className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Frecuencia en días</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Frecuencia en días</label>
                       <input
                         type="number"
                         value={formData.frecuencia_compra_dias}
                         onChange={e => setFormData({...formData, frecuencia_compra_dias: parseInt(e.target.value) || 0})}
-                        className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                        className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -685,11 +680,11 @@ export default function ClientesPage() {
 
               {formData.bloqueado && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Motivo del Bloqueo</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Motivo del Bloqueo</label>
                   <textarea
                     value={formData.motivo_bloqueo}
                     onChange={e => setFormData({...formData, motivo_bloqueo: e.target.value})}
-                    className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                    className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
                     rows={3}
                     placeholder="Ej: Deudas pendientes, comportamiento fraudulento..."
                   />
@@ -718,21 +713,21 @@ export default function ClientesPage() {
           {activeTab === 'avanzado' && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Email Secundario</label><input type="email" value={formData.email_secundario} onChange={e => setFormData({...formData, email_secundario: e.target.value})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label><input type="text" value={formData.whatsapp} onChange={e => setFormData({...formData, whatsapp: e.target.value})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email Secundario</label><input type="email" value={formData.email_secundario} onChange={e => setFormData({...formData, email_secundario: e.target.value})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">WhatsApp</label><input type="text" value={formData.whatsapp} onChange={e => setFormData({...formData, whatsapp: e.target.value})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" /></div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Condición IVA</label><input type="text" value={formData.condicion_iva} onChange={e => setFormData({...formData, condicion_iva: e.target.value})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" placeholder="Ej: Responsable Inscripto" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">País</label><input type="text" value={formData.pais} onChange={e => setFormData({...formData, pais: e.target.value})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Condición IVA</label><input type="text" value={formData.condicion_iva} onChange={e => setFormData({...formData, condicion_iva: e.target.value})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" placeholder="Ej: Responsable Inscripto" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">País</label><input type="text" value={formData.pais} onChange={e => setFormData({...formData, pais: e.target.value})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" /></div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Categoría Cliente</label><select value={formData.categoria_cliente} onChange={e => setFormData({...formData, categoria_cliente: e.target.value})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"><option value="">Sin categoría</option><option value="A">A - Premium</option><option value="B">B - Gold</option><option value="C">C - Silver</option><option value="D">D - Bronce</option><option value="E">E - Básico</option></select></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Etiqueta Personalizada</label><input type="text" value={formData.etiqueta_personalizada} onChange={e => setFormData({...formData, etiqueta_personalizada: e.target.value})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" placeholder="Ej: VIP, Mayorista" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Categoría Cliente</label><select value={formData.categoria_cliente} onChange={e => setFormData({...formData, categoria_cliente: e.target.value})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"><option value="">Sin categoría</option><option value="A">A - Premium</option><option value="B">B - Gold</option><option value="C">C - Silver</option><option value="D">D - Bronce</option><option value="E">E - Básico</option></select></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Etiqueta Personalizada</label><input type="text" value={formData.etiqueta_personalizada} onChange={e => setFormData({...formData, etiqueta_personalizada: e.target.value})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" placeholder="Ej: VIP, Mayorista" /></div>
               </div>
               <div className="grid grid-cols-3 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Saldo Pendiente</label><input type="number" value={formData.saldo_pendiente} onChange={e => setFormData({...formData, saldo_pendiente: parseFloat(e.target.value) || 0})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Límite Crédito Negro</label><input type="number" value={formData.limite_credito_negro} onChange={e => setFormData({...formData, limite_credito_negro: parseFloat(e.target.value) || 0})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Saldo Crédito Negro</label><input type="number" value={formData.saldo_credito_negro} onChange={e => setFormData({...formData, saldo_credito_negro: parseFloat(e.target.value) || 0})} className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2 focus:ring-2 focus:ring-blue-500/20 focus:outline-none" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Saldo Pendiente</label><input type="number" value={formData.saldo_pendiente} onChange={e => setFormData({...formData, saldo_pendiente: parseFloat(e.target.value) || 0})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Límite Crédito Negro</label><input type="number" value={formData.limite_credito_negro} onChange={e => setFormData({...formData, limite_credito_negro: parseFloat(e.target.value) || 0})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Saldo Crédito Negro</label><input type="number" value={formData.saldo_credito_negro} onChange={e => setFormData({...formData, saldo_credito_negro: parseFloat(e.target.value) || 0})} className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all" /></div>
               </div>
               <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4">
                 <p className="text-sm font-medium text-gray-700 mb-3">Preferencias de Contacto</p>

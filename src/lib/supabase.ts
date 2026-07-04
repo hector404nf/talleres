@@ -1,8 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 import { create } from 'zustand';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://tronngbyuwtyrrkzjctr.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyb25uZ2J5dXd0eXJya3pqY3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNDcyMTgsImV4cCI6MjA5MzkyMzIxOH0.vf0_GP0uKrgSP0jwsen3e-SHl8DQGN_I7rNwhlXVLiA';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Faltan las variables de entorno NEXT_PUBLIC_SUPABASE_URL y/o NEXT_PUBLIC_SUPABASE_ANON_KEY. Revisá tu archivo .env.local'
+  );
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -87,13 +93,6 @@ export const useAuthStore = create((set: any, get: any) => ({
         .single();
 
       if (error || !data) {
-        // Fallback: verificar credenciales locales para demo
-        if (username === 'admin' && password === 'admin123') {
-          const demoUser = { id: 'demo-admin', username: 'admin', nombre_completo: 'Administrador', rol: 'admin' };
-          localStorage.setItem('user', JSON.stringify(demoUser));
-          set({ user: demoUser, isAuthenticated: true });
-          return { success: true };
-        }
         return { success: false, error: 'Credenciales inválidas' };
       }
 
@@ -107,13 +106,6 @@ export const useAuthStore = create((set: any, get: any) => ({
 
       return { success: true };
     } catch (error: any) {
-      // Fallback local para demo sin conexión
-      if (username === 'admin' && password === 'admin123') {
-        const demoUser = { id: 'demo-admin', username: 'admin', nombre_completo: 'Administrador', rol: 'admin' };
-        localStorage.setItem('user', JSON.stringify(demoUser));
-        set({ user: demoUser, isAuthenticated: true });
-        return { success: true };
-      }
       return { success: false, error: error.message };
     }
   },
@@ -1780,5 +1772,56 @@ export const usePedidosWebStore = create((set: any, get: any) => ({
     set((state: any) => ({ pedidos: state.pedidos.map((p: any) => p.id === id ? { ...p, ...data } : p) }));
     localStorage.setItem('pedidos_web', JSON.stringify(get().pedidos));
     return { success: true };
+  }
+}));
+
+// ==================== CONFIGURACIÓN GENERAL ====================
+export const useConfigStore = create((set: any, get: any) => ({
+  config: null,
+  isLoading: false,
+
+  fetchConfig: async () => {
+    set({ isLoading: true });
+    try {
+      const { data, error } = await supabase.from('configuracion').select('*').limit(1).single();
+      if (!error && data) {
+        set({ config: data });
+        localStorage.setItem('configuracion', JSON.stringify(data));
+        return data;
+      }
+    } catch {}
+    const stored = localStorage.getItem('configuracion');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      set({ config: parsed });
+      set({ isLoading: false });
+      return parsed;
+    }
+    set({ isLoading: false });
+    return null;
+  },
+
+  updateConfig: async (data: any) => {
+    const current = get().config;
+    const merged = { ...current, ...data };
+    try {
+      if (current?.id) {
+        const { error } = await supabase.from('configuracion').update({ ...data, fecha_actualizacion: new Date().toISOString() }).eq('id', current.id);
+        if (!error) {
+          set({ config: merged });
+          localStorage.setItem('configuracion', JSON.stringify(merged));
+          registrarAuditoria('actualizar', 'configuracion', current.id, data, current);
+          return { success: true };
+        }
+      }
+    } catch (e) {}
+    set({ config: merged });
+    localStorage.setItem('configuracion', JSON.stringify(merged));
+    return { success: true };
+  },
+
+  getConfigValue: (key: string, defaultValue?: any) => {
+    const cfg = get().config || {};
+    return cfg[key] ?? defaultValue;
   }
 }));

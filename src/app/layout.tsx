@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ToastProvider from "@/components/ToastProvider";
+import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,10 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className="bg-gray-50">
-        {children}
-        <ToastProvider />
+    <html lang="es" suppressHydrationWarning>
+      <body className="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors">
+        <ThemeProvider>
+          {children}
+          <ToastProvider />
+        </ThemeProvider>
       </body>
     </html>
   );
