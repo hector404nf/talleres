@@ -416,8 +416,8 @@ export default function VentasPage() {
           {/* Ticket / Carrito */}
           <div className="w-full lg:w-[360px] xl:w-[420px] 2xl:w-[480px] flex flex-col min-h-0 min-w-0 bg-white dark:bg-gray-900 lg:border-l border-gray-100 dark:border-gray-800 max-h-[45%] lg:max-h-none">
             {/* Header del ticket */}
-            <div className="p-4 lg:p-5 border-b border-gray-100 dark:border-gray-800">
-              <div className="flex items-center justify-between mb-4">
+            <div className="p-4 lg:p-5 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-brand-primary" />
                   <h3 className="font-bold text-gray-900 dark:text-white">Ticket</h3>
@@ -443,7 +443,7 @@ export default function VentasPage() {
             </div>
 
             {/* Items del carrito */}
-            <div className="flex-1 overflow-y-auto p-4 lg:p-6">
+            <div className="flex-1 min-h-[120px] overflow-y-auto p-4 lg:p-5">
               {cart.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
                   <ShoppingCart className="w-16 h-16 mb-4 opacity-30" />
@@ -492,174 +492,178 @@ export default function VentasPage() {
 
             {/* Panel de pago */}
             {cart.length > 0 && (
-              <div className="p-4 lg:p-6 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 space-y-4">
-                {/* Descuento */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Descuento %</label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={descuentoPorcentaje}
-                      onChange={e => { setDescuentoPorcentaje(parseFloat(e.target.value) || 0); setDescuentoMonto(0); }}
-                      className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Descuento $</label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={descuentoMonto}
-                      onChange={e => { setDescuentoMonto(parseFloat(e.target.value) || 0); setDescuentoPorcentaje(0); }}
-                      className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Total */}
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4">
-                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    <span>Subtotal</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{formatPriceConfig(subtotal)}</span>
-                  </div>
-                  {descuentoCalculado > 0 && (
-                    <div className="flex justify-between text-sm text-red-500 mb-1">
-                      <span>Descuento</span>
-                      <span className="font-medium">-{formatPriceConfig(descuentoCalculado)}</span>
+              <div className="flex-shrink-0 flex flex-col max-h-[55%] border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+                <div className="flex-1 overflow-y-auto p-3 lg:p-4 space-y-3">
+                  {/* Descuento */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Descuento %</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={descuentoPorcentaje}
+                        onChange={e => { setDescuentoPorcentaje(parseFloat(e.target.value) || 0); setDescuentoMonto(0); }}
+                        className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
+                      />
                     </div>
-                  )}
-                  <div className="flex justify-between items-end pt-2 border-t border-gray-200 dark:border-gray-700">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Total a pagar</span>
-                    <span className="text-3xl font-bold text-gray-900 dark:text-white">{formatPriceConfig(totalVenta)}</span>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Descuento $</label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={descuentoMonto}
+                        onChange={e => { setDescuentoMonto(parseFloat(e.target.value) || 0); setDescuentoPorcentaje(0); }}
+                        className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Tabs de pago */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Forma de pago</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {Object.entries(FORMAS_PAGO).map(([key, cfg]) => {
-                      const Icon = cfg.icon;
-                      return (
-                        <button
-                          key={key}
-                          type="button"
-                          onClick={() => {
-                            setActivePagoTab(key);
-                            setPagos([{ forma_pago: key, monto: key === 'efectivo' ? recibidoEfectivo : totalVenta }]);
-                            if (key === 'efectivo') setRecibidoEfectivo(totalVenta);
-                          }}
-                          className={`flex flex-col items-center gap-1 p-2.5 rounded-xl text-xs font-medium transition-all border ${
-                            activePagoTab === key
-                              ? 'bg-brand-primary text-white border-brand-primary shadow-md shadow-brand-primary/20'
-                              : 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-brand-primary/30'
-                          }`}
-                        >
-                          <Icon className="w-4 h-4" />
-                          {cfg.label}
-                        </button>
-                      );
-                    })}
+                  {/* Total */}
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-3 lg:p-4">
+                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      <span>Subtotal</span>
+                      <span className="font-medium text-gray-900 dark:text-white">{formatPriceConfig(subtotal)}</span>
+                    </div>
+                    {descuentoCalculado > 0 && (
+                      <div className="flex justify-between text-sm text-red-500 mb-1">
+                        <span>Descuento</span>
+                        <span className="font-medium">-{formatPriceConfig(descuentoCalculado)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-end pt-2 border-t border-gray-200 dark:border-gray-700">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Total</span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{formatPriceConfig(totalVenta)}</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Pago mixto */}
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (pagos.length === 1) {
-                        addPago();
-                      }
-                    }}
-                    className="text-xs font-medium text-brand-primary hover:underline"
-                  >
-                    + Pago mixto
-                  </button>
-                  {pagos.length > 1 && (
-                    <div className="space-y-2 mt-2">
-                      {pagos.map((pago, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <select
-                            value={pago.forma_pago}
-                            onChange={e => updatePago(index, 'forma_pago', e.target.value)}
-                            className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
-                          >
-                            {Object.entries(FORMAS_PAGO).map(([key, cfg]) => (
-                              <option key={key} value={key}>{cfg.label}</option>
-                            ))}
-                          </select>
-                          <input
-                            type="number"
-                            step="0.01"
-                            value={pago.monto}
-                            onChange={e => updatePago(index, 'monto', parseFloat(e.target.value) || 0)}
-                            className="w-28 px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
-                          />
+                  {/* Tabs de pago */}
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">Forma de pago</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {Object.entries(FORMAS_PAGO).map(([key, cfg]) => {
+                        const Icon = cfg.icon;
+                        return (
                           <button
+                            key={key}
                             type="button"
-                            onClick={() => removePago(index)}
-                            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                            onClick={() => {
+                              setActivePagoTab(key);
+                              setPagos([{ forma_pago: key, monto: key === 'efectivo' ? recibidoEfectivo : totalVenta }]);
+                              if (key === 'efectivo') setRecibidoEfectivo(totalVenta);
+                            }}
+                            className={`flex flex-col items-center gap-1 p-2 rounded-xl text-xs font-medium transition-all border ${
+                              activePagoTab === key
+                                ? 'bg-brand-primary text-white border-brand-primary shadow-md shadow-brand-primary/20'
+                                : 'bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-brand-primary/30'
+                            }`}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Icon className="w-4 h-4" />
+                            {cfg.label}
                           </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                {/* Recibido en efectivo */}
-                {activePagoTab === 'efectivo' && pagos.length === 1 && (
+                  {/* Pago mixto */}
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Recibido</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={recibidoEfectivo}
-                      onChange={e => {
-                        const recibido = parseFloat(e.target.value) || 0;
-                        setRecibidoEfectivo(recibido);
-                        setPagos([{ forma_pago: 'efectivo', monto: recibido }]);
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (pagos.length === 1) {
+                          addPago();
+                        }
                       }}
-                      className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
-                    />
-                    {recibidoEfectivo > 0 && (
-                      <div className="flex justify-between text-sm mt-2">
-                        <span className="text-gray-500 dark:text-gray-400">Vuelto</span>
-                        <span className={`font-bold ${vuelto > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
-                          {formatPriceConfig(vuelto)}
-                        </span>
+                      className="text-xs font-medium text-brand-primary hover:underline"
+                    >
+                      + Pago mixto
+                    </button>
+                    {pagos.length > 1 && (
+                      <div className="space-y-2 mt-2">
+                        {pagos.map((pago, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <select
+                              value={pago.forma_pago}
+                              onChange={e => updatePago(index, 'forma_pago', e.target.value)}
+                              className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
+                            >
+                              {Object.entries(FORMAS_PAGO).map(([key, cfg]) => (
+                                <option key={key} value={key}>{cfg.label}</option>
+                              ))}
+                            </select>
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={pago.monto}
+                              onChange={e => updatePago(index, 'monto', parseFloat(e.target.value) || 0)}
+                              className="w-24 px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removePago(index)}
+                              className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
-                )}
 
-                {/* Estado del pago */}
-                <div className={`flex items-center gap-2 p-3 rounded-xl text-sm ${
-                  totalPagos >= totalVenta
-                    ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
-                    : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                }`}>
-                  {totalPagos >= totalVenta ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-                  <span className="font-medium">
-                    {totalPagos >= totalVenta
-                      ? `Pago completo ${vuelto > 0 ? `(vuelto ${formatPriceConfig(vuelto)})` : ''}`
-                      : `Faltan ${formatPriceConfig(totalVenta - totalPagos)}`}
-                  </span>
+                  {/* Recibido en efectivo */}
+                  {activePagoTab === 'efectivo' && pagos.length === 1 && (
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Recibido</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={recibidoEfectivo}
+                        onChange={e => {
+                          const recibido = parseFloat(e.target.value) || 0;
+                          setRecibidoEfectivo(recibido);
+                          setPagos([{ forma_pago: 'efectivo', monto: recibido }]);
+                        }}
+                        className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all"
+                      />
+                      {recibidoEfectivo > 0 && (
+                        <div className="flex justify-between text-sm mt-2">
+                          <span className="text-gray-500 dark:text-gray-400">Vuelto</span>
+                          <span className={`font-bold ${vuelto > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                            {formatPriceConfig(vuelto)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Estado del pago */}
+                  <div className={`flex items-center gap-2 p-3 rounded-xl text-sm ${
+                    totalPagos >= totalVenta
+                      ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
+                      : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                  }`}>
+                    {totalPagos >= totalVenta ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                    <span className="font-medium">
+                      {totalPagos >= totalVenta
+                        ? `Pago completo ${vuelto > 0 ? `(vuelto ${formatPriceConfig(vuelto)})` : ''}`
+                        : `Faltan ${formatPriceConfig(totalVenta - totalPagos)}`}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Botón finalizar */}
-                <button
-                  onClick={handleVenta}
-                  disabled={totalPagos < totalVenta || !selectedCliente}
-                  className="w-full bg-brand-primary text-white py-4 rounded-2xl hover:opacity-90 transition-opacity font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-brand-primary/20 flex items-center justify-center gap-2"
-                >
-                  <span>Finalizar Venta</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                {/* Botón finalizar - siempre visible */}
+                <div className="p-3 lg:p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
+                  <button
+                    onClick={handleVenta}
+                    disabled={totalPagos < totalVenta || !selectedCliente}
+                    className="w-full bg-brand-primary text-white py-3.5 rounded-2xl hover:opacity-90 transition-opacity font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-brand-primary/20 flex items-center justify-center gap-2"
+                  >
+                    <span>Finalizar Venta</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             )}
           </div>
